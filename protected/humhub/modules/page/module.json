@@ -1,0 +1,9 @@
+{
+    "id": "page",
+    "name": "Page",
+    "description": "Page Core",
+    "keywords": [
+        "core"
+    ],
+    "version": "1.0"
+}

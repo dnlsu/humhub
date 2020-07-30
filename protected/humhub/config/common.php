@@ -37,7 +37,7 @@ $config = [
             'class' => \humhub\components\ModuleManager::class
         ],
         'notification' => [
-            'class' => \humhub\modules\notification\components\NotificationManager::class,
+            'class' => \humhub\modules\page\components\NotificationManager::class,
             'targets' => [
                 \humhub\modules\notification\targets\WebTarget::class => [
                     'renderer' => ['class' => \humhub\modules\notification\renderer\WebRenderer::class]

@@ -41,6 +41,7 @@
                 <ul class="nav" id="top-menu-nav">
                     <!-- load space chooser widget -->
                     <?= \humhub\modules\space\widgets\Chooser::widget(); ?>
+                    <?= \humhub\modules\page\widgets\Chooser::widget(); ?>
 
                     <!-- load navigation from widget -->
                     <?= \humhub\widgets\TopMenu::widget(); ?>
