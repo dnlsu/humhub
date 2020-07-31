@@ -1,6 +1,6 @@
 <?php
 
-use humhub\modules\content\widgets\WallEntryAddons;
+use humhub\modules\page\widgets\WallEntryAddons;
 use humhub\modules\content\widgets\WallEntryControls;
 use humhub\modules\content\widgets\WallEntryLabels;
 use humhub\modules\page\libs\Html;

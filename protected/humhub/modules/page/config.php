@@ -1,5 +1,6 @@
 <?php
 
+use humhub\modules\content\widgets\WallEntry;
 use humhub\modules\search\engine\Search;
 use humhub\modules\user\models\User;
 use humhub\modules\page\Events;
@@ -24,6 +25,6 @@ return [
         [Search::class, Search::EVENT_ON_REBUILD, [Events::class, 'onSearchRebuild']],
         [Application::class, Application::EVENT_ON_INIT, [Events::class, 'onConsoleApplicationInit']],
         [IntegrityController::class, IntegrityController::EVENT_ON_RUN, [Events::class, 'onIntegrityCheck']],
-        [\humhub\modules\content\widgets\WallEntry::class, \humhub\modules\content\widgets\WallEntry::EVENT_INIT, [Events::class, 'onWallEntryInit']],
+        [WallEntry::class, WallEntry::EVENT_INIT, [Events::class, 'onWallEntryInit']],
     ],
 ];

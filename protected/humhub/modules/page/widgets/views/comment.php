@@ -1,0 +1,133 @@
+<?php
+
+use humhub\modules\page\libs\Html;
+use humhub\widgets\TimeAgo;
+use humhub\modules\content\widgets\richtext\RichText;
+use humhub\modules\page\widgets\Image as PageImage;
+use humhub\modules\user\widgets\Image as UserImage;
+use humhub\modules\file\widgets\ShowFiles;
+use humhub\modules\like\widgets\LikeLink;
+use humhub\modules\comment\widgets\CommentLink;
+use humhub\modules\page\widgets\Comments;
+
+/* @var $this \humhub\modules\ui\view\components\View */
+/* @var $comment \humhub\modules\comment\models\Comment */
+/* @var $deleteUrl string */
+/* @var $editUrl string */
+/* @var $loadUrl string */
+/* @var $user \humhub\modules\user\models\User */
+/* @var $canEdit bool */
+/* @var $canDelete bool */
+/* @var $createdAt string */
+/* @var $updatedAt string */
+
+/** @var \humhub\modules\comment\Module $module */
+$module = Yii::$app->getModule('comment');
+
+?>
+
+<div class="media" id="comment_<?= $comment->id; ?>"
+     data-action-component="comment.Comment"
+     data-content-delete-url="<?= $deleteUrl ?>">
+
+    <hr class="comment-separator">
+
+    <?php if ($canEdit || $canDelete) : ?>
+        <div class="comment-entry-loader pull-right"></div>
+        <ul class="nav nav-pills preferences">
+            <li class="dropdown ">
+                <a class="dropdown-toggle" data-toggle="dropdown" href="#"
+                   aria-label="<?= Yii::t('base', 'Toggle comment menu'); ?>" aria-haspopup="true">
+                    <i class="fa fa-angle-down"></i>
+                </a>
+
+                <ul class="dropdown-menu pull-right">
+                    <?php if ($canEdit): ?>
+                        <li>
+                            <a href="#" class="comment-edit-link" data-action-click="edit"
+                               data-action-url="<?= $editUrl ?>">
+                                <i class="fa fa-pencil"></i> <?= Yii::t('CommentModule.base', 'Edit') ?>
+                            </a>
+                            <a href="#" class="comment-cancel-edit-link" data-action-click="cancelEdit"
+                               data-action-url="<?= $loadUrl ?>" style="display:none;">
+                                <i class="fa fa-pencil"></i> <?= Yii::t('CommentModule.base', 'Cancel Edit') ?>
+                            </a>
+                        </li>
+                    <?php endif; ?>
+
+                    <?php if ($canDelete): ?>
+                        <li>
+                            <a href="#" data-action-click="delete">
+                                <i class="fa fa-trash-o"></i> <?= Yii::t('CommentModule.base', 'Delete') ?>
+                            </a>
+                        </li>
+                    <?php endif; ?>
+                </ul>
+            </li>
+        </ul>
+    <?php endif;
+    $content = $comment->getContent();
+    if ($content) {
+        $container = $content->container;
+    } else {
+        $container = $content->container;
+    }
+    ?>
+    <?php if ($container && $container->created_by == $user->id): ?>
+        <?=
+        PageImage::widget([
+            'page' => $container,
+            'width' => 40,
+            'htmlOptions' => ['class' => 'pull-left', 'data-contentcontainer-id' => $container->contentcontainer_id],
+        ]);
+        ?>
+    <?php
+    else:
+        ?>
+        <?=
+        UserImage::widget([
+            'user' => $user,
+            'width' => 40,
+            'htmlOptions' => ['class' => 'pull-left', 'data-contentcontainer-id' => $user->contentcontainer_id],
+        ]);
+        ?>
+    <?php endif; ?>
+    <div>
+        <div class="media-body">
+            <h4 class="media-heading">
+                <?php if ($container && $container->created_by == $user->id): ?>
+                    <?= Html::containerLink($container); ?>
+                <?php
+                else:
+                    ?>
+                    <?= Html::containerLink($user); ?>
+                <?php endif; ?>
+                <small><?= TimeAgo::widget(['timestamp' => $createdAt]); ?>
+                    <?php if ($updatedAt !== null): ?>
+                        &middot; <span class="tt"
+                                       title="<?= Yii::$app->formatter->asDateTime($updatedAt); ?>"><?= Yii::t('ContentModule.base', 'Updated'); ?></span>
+                    <?php endif; ?>
+                </small>
+            </h4>
+        </div>
+        <!-- class comment_edit_content required since v1.2 -->
+        <div class="content comment_edit_content" id="comment_editarea_<?= $comment->id; ?>">
+            <div id="comment-message-<?= $comment->id; ?>" class="comment-message" data-ui-markdown data-ui-show-more
+                 data-read-more-text="<?= Yii::t('CommentModule.base', 'Read full comment...') ?>">
+                <?= RichText::output($comment->message, ['record' => $comment]); ?>
+            </div>
+            <?= ShowFiles::widget(['object' => $comment]); ?>
+        </div>
+
+        <div class="wall-entry-controls">
+            <?php if ($module->canComment($comment)): ?>
+                <?= CommentLink::widget(['object' => $comment]); ?>&nbsp;&nbsp;&middot;&nbsp;
+            <?php endif; ?>
+            <?= LikeLink::widget(['object' => $comment]); ?>
+        </div>
+
+        <div class="nested-comments-root" style="margin-left:42px">
+            <?= Comments::widget(['object' => $comment]); ?>
+        </div>
+    </div>
+</div>
