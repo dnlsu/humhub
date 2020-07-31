@@ -96,7 +96,7 @@ class PageController extends Behavior
                 ]),
             ];
 
-            $this->owner->view->registerJs('humhub.modules.space.setPage(' . Json::encode($options) . ', ' .
+            $this->owner->view->registerJs('humhub.modules.space.setSpace(' . Json::encode($options) . ', ' .
                     Json::encode(Yii::$app->request->isPjax) . ')');
         }
     }
