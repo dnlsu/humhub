@@ -341,7 +341,7 @@ class NotificationManager
         Membership::updateAll(['send_notifications' => 0], [
             'and',
             ['user_id' => $user->id],
-            ['not in', 'space_id', $spaceIds]
+            ['not in', 'page_id', $spaceIds]
         ]);
 
         // Update non selected following spaces

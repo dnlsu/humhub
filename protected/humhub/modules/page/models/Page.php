@@ -532,8 +532,8 @@ class Page extends ContentContainerActiveRecord implements Searchable
     {
         $status = ($status == null) ? Membership::STATUS_MEMBER : $status;
         $query = User::find();
-        $query->leftJoin('page_membership', 'page_membership.user_id=user.id AND page_membership.space_id=:space_id AND page_membership.status=:member', ['page_id' => $this->id, 'member' => $status]);
-        $query->andWhere('page_membership.space_id IS NOT NULL');
+        $query->leftJoin('page_membership', 'page_membership.user_id=user.id AND page_membership.page_id=:page_id AND page_membership.status=:member', ['page_id' => $this->id, 'member' => $status]);
+        $query->andWhere('page_membership.page_id IS NOT NULL');
         $query->addOrderBy(['page_membership.group_id' => SORT_DESC]);
 
         return $query;
@@ -542,8 +542,8 @@ class Page extends ContentContainerActiveRecord implements Searchable
     public function getNonMembershipUser()
     {
         $query = User::find();
-        $query->leftJoin('page_membership', 'page_membership.user_id=user.id AND page_membership.space_id=:space_id ', ['page_id' => $this->id]);
-        $query->andWhere('page_membership.space_id IS NULL');
+        $query->leftJoin('page_membership', 'page_membership.user_id=user.id AND page_membership.page_id=:page_id ', ['page_id' => $this->id]);
+        $query->andWhere('page_membership.page_id IS NULL');
         $query->orWhere(['!=', 'page_membership.status', Membership::STATUS_MEMBER]);
         $query->addOrderBy(['page_membership.group_id' => SORT_DESC]);
 

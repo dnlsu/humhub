@@ -61,7 +61,7 @@ class ChangeOwnerForm extends Model
     {
         $possibleOwners = [];
 
-        $query = Membership::find()->joinWith(['user', 'user.profile'])->andWhere(['page_membership.group_id' => Page::USERGROUP_ADMIN, 'page_membership.space_id' => $this->page->id]);
+        $query = Membership::find()->joinWith(['user', 'user.profile'])->andWhere(['page_membership.group_id' => Page::USERGROUP_ADMIN, 'page_membership.page_id' => $this->page->id]);
         foreach ($query->all() as $membership) {
             $possibleOwners[$membership->user->id] = $membership->user->displayName;
         }

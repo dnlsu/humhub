@@ -241,7 +241,7 @@ class Membership extends ActiveRecord
         $query = Page::find();
         $query->leftJoin(
             'page_membership',
-            'page_membership.space_id=space.id and page_membership.user_id=:userId',
+            'page_membership.page_id=page.id and page_membership.user_id=:userId',
             [':userId' => $user->id]
         );
 

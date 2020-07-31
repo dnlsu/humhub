@@ -122,7 +122,7 @@ class MembershipSearch extends Membership
             return $dataProvider;
         }
 
-        $query->andWhere(['page_membership.space_id' => $this->page_id]);
+        $query->andWhere(['page_membership.page_id' => $this->page_id]);
 
         // Freetext filters
         if (!empty($this->freeText)) {
